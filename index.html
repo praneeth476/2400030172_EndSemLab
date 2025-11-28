@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h3>Student Notes App</h3>
+
+<input id="note" placeholder="Enter note">
+<button onclick="addNote()">Add</button>
+
+<ul id="list"></ul>
+
+<script>
+let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+display();
+
+function addNote(){
+  notes.push(document.getElementById("note").value);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  document.getElementById("note").value="";
+  display();
+}
+
+function display(){
+  let out = "";
+  notes.forEach((n,i)=>{
+    out += `<li>${n}
+      <button onclick="edit(${i})">Edit</button>
+      <button onclick="del(${i})">Delete</button>
+    </li>`;
+  });
+  document.getElementById("list").innerHTML = out;
+}
+
+function edit(i){
+  let newNote = prompt("Edit note:", notes[i]);
+  notes[i] = newNote;
+  localStorage.setItem("notes", JSON.stringify(notes));
+  display();
+}
+
+function del(i){
+  notes.splice(i,1);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  display();
+}
+</script>
+
+</body>
+</html>
